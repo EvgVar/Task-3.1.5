@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+<h1>Admin page</h1>
+<hr/>
+<a href="/admin/usersList">List of users</a>
+<hr/>
+<a href="/user">User page</a>
+<hr/>
+
+<br/>
+<br/>
+<form th:action="@{/logout}" th:method="POST">
+    <input type="submit" value="Logout"/>
+</form>
+</body>
+</html>
