@@ -12,9 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
-
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,7 +29,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -52,7 +51,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
         userRepository.save(user);
     }
 
@@ -60,6 +58,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateUser(@NotNull User user) {
+        saveUser(user);
     }
 
     @Transactional(readOnly = true)

@@ -19,6 +19,13 @@
     <input type="number" th:field="*{age}" id="age"/>
     <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
     <br/>
+    <label for="roles">Select role: </label>
+    <input type="checkbox" id="roles" th:each="role : ${allRoles}"
+           th:field="*{roles}"
+           th:value="${role.id}"
+           th:text="${role}"/>
+    <div style="color:red" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Role Error</div>
+    <br/>
     <label for="password">Enter password: </label>
     <input type="password" th:field="*{password}" id="password"/>
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>

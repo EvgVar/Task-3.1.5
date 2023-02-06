@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -43,11 +42,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, String sex, int age) {
+    public User(String username, String password, String sex, int age, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.sex = sex;
         this.age = age;
+        this.roles = roles;
     }
 
     public long getId() {
@@ -130,23 +130,12 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        if (id != user.id) return false;
-        if (age != user.age) return false;
-        return Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(sex, user.sex) &&
-                Objects.equals(roles, user.roles);
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
-        result = 31 * result + age;
-        result = 31 * result + (roles != null ? roles.hashCode() : 0);
-        return result;
+        return (int) (id ^ (id >>> 32));
     }
 
     @Override

@@ -17,20 +17,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/index")
-    public String getStartPage() {
-        return "index";
-    }
-
     @GetMapping("/user")
     public String getUserPage(Principal principal, Model model) {
         model.addAttribute("user", userService.loadUserByUsername(principal.getName()));
         return "user";
-    }
-
-    @GetMapping("/admin")
-    public String getAdminPage() {
-        return "admin";
     }
 }
 
