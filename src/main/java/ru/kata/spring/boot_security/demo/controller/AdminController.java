@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,26 +26,12 @@ public class AdminController {
     }
 
     @GetMapping
-    public String getAdminPage() {
-        return "admin";
-    }
-
-    @GetMapping("/usersList")
-    public String getAllUsers(Model model) {
+    public String getAdminPage(Model model, Principal principal) {
+        model.addAttribute("admin", userService.findByUsername(userService.loadUserByUsername(principal.getName()).getUsername()));
         model.addAttribute("users", userService.getAllUsers());
-        return "admin/usersList";
-    }
-
-    @GetMapping("/{id}")
-    public String getUserById(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        return "admin/show";
-    }
-
-    @GetMapping("new")
-    public String getCreateUserPage(Model model, @ModelAttribute("user") User user) {
+        model.addAttribute("newUser", new User());
         model.addAttribute("allRoles", roleService.getAllRoles());
-        return "admin/new";
+        return "admin";
     }
 
     @PostMapping()
@@ -52,17 +39,10 @@ public class AdminController {
                              @ModelAttribute("allRoles") @Valid Role role,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "admin/new";
+            return "admin";
         }
         userService.saveUser(user);
         return "redirect:/admin";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String getUpdateUserPage(Model model, @PathVariable("id") long id) {
-        model.addAttribute("allRoles", roleService.getAllRoles());
-        model.addAttribute("user", userService.getUser(id));
-        return "admin/edit";
     }
 
     @PatchMapping("/{id}")
@@ -70,7 +50,7 @@ public class AdminController {
                                  @ModelAttribute("allRoles") @Valid Role role,
                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "admin/edit";
+            return "admin";
         }
         userService.updateUser(user);
         return "redirect:/admin";

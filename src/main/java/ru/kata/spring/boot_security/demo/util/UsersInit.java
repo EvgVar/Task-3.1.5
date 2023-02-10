@@ -9,7 +9,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import javax.annotation.PostConstruct;
 import java.util.Set;
 
-@Component
+//@Component
 public class UsersInit {
 //    private final UserService userService;
 //    private final RoleService roleService;

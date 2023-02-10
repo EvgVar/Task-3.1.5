@@ -1,23 +1,75 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3" lang="">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
-
-<hr/>
-
-Username: <span th:text="${user.getUsername()}">VALUE</span>
-<br/>
-
-Role: <span th:text="${user.getAuthorities()}">VALUE</span>
-<br/>
-<hr/>
-
-<form th:action="@{/logout}" th:method="POST">
-    <input type="submit" value="Logout"/>
-</form>
-
+<title>User</title>
+<div class="row">
+    <div class="container-fluid">
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="text-white fs-5 ps-4">
+                <span class="fw-bold" th:text="${user.getUsername()}"></span>
+                with roles:
+                <th th:each="roles:${user.getRoles()}" th:text="${' ' + roles.toString().replace('ROLE_', '')}"></th>
+            </div>
+            <div>
+                <form th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-dark text-secondary" type="submit" value="Logout"/>
+                </form>
+            </div>
+        </nav>
+    </div>
+    <div class="row vh-100">
+        <div class="col-1">
+            <div class="row-fluid">
+                <nav class="nav flex-column nav-pills">
+                    <a class="nav-link active">User</a>
+                </nav>
+            </div>
+        </div>
+        <div class="col bg-light">
+            <h1>User information-page</h1>
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">About user</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Sex</th>
+                            <th>Age</th>
+                            <th>Roles</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${user.getId()}"></td>
+                            <td th:text="${user.getUsername()}"></td>
+                            <td th:text="${user.getSex()}"></td>
+                            <td th:text="${user.getAge()}"></td>
+                            <td>
+                                <th:block th:each="role:${user.getRoles()}"
+                                          th:text="${' ' + role.toString().replace('ROLE_', '')}"></th:block>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
 </body>
 </html>
