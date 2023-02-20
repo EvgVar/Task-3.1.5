@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User getUser(long id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id).orElse(null);
     }
 
     @Transactional(readOnly = true)
@@ -60,9 +60,16 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
-    public void updateUser(@NotNull User user) {
-        saveUser(user);
+    public void updateUser(@NotNull User user, long id) {
+        if (userRepository.existsById(id)) {
+            user.setId(id);
+            user.setSex(user.getSex());
+            user.setAge(user.getAge());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+        }
     }
 
     @Transactional(readOnly = true)
